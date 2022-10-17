@@ -89,7 +89,7 @@ public class ItemListFragment extends Fragment {
         displayMaker.jsonParse(getActivity());
         //Sets adapter based on the values in our MODELS list
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(
-                displayMaker.MODELS,
+                ModelContent.MODELS,
                 itemDetailFragmentContainer
         ));
     }
@@ -126,7 +126,7 @@ public class ItemListFragment extends Fragment {
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.modelItem = modelValues.get(position);
             holder.mIdView.setText(modelValues.get(position).getName());
-            holder.mContentView.setText(modelValues.get(position).getYear());
+            holder.mContentView.setText(modelValues.get(position).getYear().toString());
 
             holder.itemView.setTag(modelValues.get(position));
             holder.itemView.setOnClickListener(itemView -> {

@@ -40,7 +40,10 @@ public class ModelContent {
                     public void onResponse(JSONObject response) {
                         // NEXT, we need to use GSON to turn that JSON into a model
                         try {
-                            JSONArray jsonArray = response.getJSONArray("record:gameCompanies");
+                            JSONObject object = response.getJSONObject("record");
+                            JSONArray jsonArray = object.getJSONArray("gameCompanies");
+                            MODELS.clear();
+                            MODELS_MAP.clear();
                             for(int i = 0; i < jsonArray.length(); i++)
                             {
                                 JSONObject gameCompany = jsonArray.getJSONObject(i);
