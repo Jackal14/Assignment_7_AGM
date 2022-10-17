@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.example.assignment_7_agm.databinding.FragmentItemListBinding;
 import com.example.assignment_7_agm.databinding.ItemListContentBinding;
 
-import com.example.assignment_7_agm.placeholder.PlaceholderContent;
+import com.example.assignment_7_agm.placeholder.ModelContent;
 
 import java.util.List;
 
@@ -34,12 +34,7 @@ import java.util.List;
  */
 public class ItemListFragment extends Fragment {
 
-    /**
-     * Method to intercept global key events in the
-     * item list fragment to trigger keyboard shortcuts
-     * Currently provides a toast when Ctrl + Z and Ctrl + F
-     * are triggered
-     */
+    //Method to intercept global key events in the item list fragment to trigger keyboard shortcuts Currently provides a toast when Ctrl + Z and Ctrl + F are triggered
     ViewCompat.OnUnhandledKeyEventListenerCompat unhandledKeyEventListenerCompat = (v, event) -> {
         if (event.getKeyCode() == KeyEvent.KEYCODE_Z && event.isCtrlPressed()) {
             Toast.makeText(
@@ -60,6 +55,7 @@ public class ItemListFragment extends Fragment {
     };
 
     private FragmentItemListBinding binding;
+    private static ModelContent displayMaker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,8 +85,11 @@ public class ItemListFragment extends Fragment {
             View itemDetailFragmentContainer
     ) {
 
+        displayMaker = new ModelContent();
+        displayMaker.jsonParse(getActivity());
+        //Sets adapter based on the values in our MODELS list
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(
-                PlaceholderContent.ITEMS,
+                displayMaker.MODELS,
                 itemDetailFragmentContainer
         ));
     }
@@ -104,12 +103,12 @@ public class ItemListFragment extends Fragment {
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<PlaceholderContent.PlaceholderItem> mValues;
+        private final List<Model> modelValues;
         private final View mItemDetailFragmentContainer;
 
-        SimpleItemRecyclerViewAdapter(List<PlaceholderContent.PlaceholderItem> items,
+        SimpleItemRecyclerViewAdapter(List<Model> items,
                                       View itemDetailFragmentContainer) {
-            mValues = items;
+            modelValues = items;
             mItemDetailFragmentContainer = itemDetailFragmentContainer;
         }
 
@@ -122,17 +121,17 @@ public class ItemListFragment extends Fragment {
 
         }
 
+        //Method to set the values for the view holder
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.modelItem = modelValues.get(position);
+            holder.mIdView.setText(modelValues.get(position).getName());
+            holder.mContentView.setText(modelValues.get(position).getYear());
 
-            holder.itemView.setTag(mValues.get(position));
+            holder.itemView.setTag(modelValues.get(position));
             holder.itemView.setOnClickListener(itemView -> {
-                PlaceholderContent.PlaceholderItem item =
-                        (PlaceholderContent.PlaceholderItem) itemView.getTag();
                 Bundle arguments = new Bundle();
-                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, modelValues.get(position).getName());
                 if (mItemDetailFragmentContainer != null) {
                     Navigation.findNavController(mItemDetailFragmentContainer)
                             .navigate(R.id.fragment_item_detail, arguments);
@@ -140,60 +139,18 @@ public class ItemListFragment extends Fragment {
                     Navigation.findNavController(itemView).navigate(R.id.show_item_detail, arguments);
                 }
             });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                /*
-                 * Context click listener to handle Right click events
-                 * from mice and trackpad input to provide a more native
-                 * experience on larger screen devices
-                 */
-                holder.itemView.setOnContextClickListener(v -> {
-                    PlaceholderContent.PlaceholderItem item =
-                            (PlaceholderContent.PlaceholderItem) holder.itemView.getTag();
-                    Toast.makeText(
-                            holder.itemView.getContext(),
-                            "Context click of item " + item.id,
-                            Toast.LENGTH_LONG
-                    ).show();
-                    return true;
-                });
-            }
-            holder.itemView.setOnLongClickListener(v -> {
-                // Setting the item id as the clip data so that the drop target is able to
-                // identify the id of the content
-                ClipData.Item clipItem = new ClipData.Item(mValues.get(position).id);
-                ClipData dragData = new ClipData(
-                        ((PlaceholderContent.PlaceholderItem) v.getTag()).content,
-                        new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN},
-                        clipItem
-                );
-
-                if (Build.VERSION.SDK_INT >= 24) {
-                    v.startDragAndDrop(
-                            dragData,
-                            new View.DragShadowBuilder(v),
-                            null,
-                            0
-                    );
-                } else {
-                    v.startDrag(
-                            dragData,
-                            new View.DragShadowBuilder(v),
-                            null,
-                            0
-                    );
-                }
-                return true;
-            });
         }
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            return modelValues.size();
         }
 
+        //Class that contains the definition for our view holder
         class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mContentView;
+            public Model modelItem;
 
             ViewHolder(ItemListContentBinding binding) {
                 super(binding.getRoot());

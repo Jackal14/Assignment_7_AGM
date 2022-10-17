@@ -18,7 +18,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.example.assignment_7_agm.placeholder.PlaceholderContent;
+import com.example.assignment_7_agm.placeholder.ModelContent;
 import com.example.assignment_7_agm.databinding.FragmentItemDetailBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,10 +36,9 @@ public class ItemDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "item_id";
 
-    /**
-     * The placeholder content this fragment is presenting.
-     */
-    private PlaceholderContent.PlaceholderItem mItem;
+
+    //Create variable of our Model item
+    private Model modelItem;
     private CollapsingToolbarLayout mToolbarLayout;
     private TextView mTextView;
     private FloatingActionButton testingFab;
@@ -47,7 +46,8 @@ public class ItemDetailFragment extends Fragment {
     private final View.OnDragListener dragListener = (v, event) -> {
         if (event.getAction() == DragEvent.ACTION_DROP) {
             ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
-            mItem = PlaceholderContent.ITEM_MAP.get(clipDataItem.getText().toString());
+            //Gets the item from our map and stores it in mItem
+            modelItem = ModelContent.MODELS_MAP.get(clipDataItem.getText().toString());
             updateContent();
         }
         return true;
@@ -66,10 +66,8 @@ public class ItemDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the placeholder content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = PlaceholderContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            //Gets the model from the model map
+            modelItem = ModelContent.MODELS_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
     }
 
@@ -85,6 +83,7 @@ public class ItemDetailFragment extends Fragment {
 
         // Show the placeholder content as text in a TextView & in the toolbar if available.
         updateContent();
+
         rootView.setOnDragListener(dragListener);
 
         return rootView;
@@ -97,10 +96,10 @@ public class ItemDetailFragment extends Fragment {
     }
 
     private void updateContent() {
-        if (mItem != null) {
-            mTextView.setText(mItem.details);
+        if (modelItem != null) {
+            mTextView.setText(modelItem.getName());
             if (mToolbarLayout != null) {
-                mToolbarLayout.setTitle(mItem.content);
+                mToolbarLayout.setTitle(modelItem.getName());
             }
         }
         if (testingFab != null)
@@ -109,38 +108,38 @@ public class ItemDetailFragment extends Fragment {
                 @Override
                 public void onClick(View view)
                 {
-                    testAllThatJazz();
+
+
+
                 }
             });
         }
 
     }
 
-    private void testAllThatJazz() {
-        String url = "https://api.jsonbin.io/v3/b/5f726a107243cd7e8245d58b";  // THAT should be in a strings.xml file!
 
-        // Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
-
-        // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the response string in our convenient existing text view
-                        mTextView.setText("Response is: "+ response);
-                        // NEXT, we need to use GSON to turn that JSON into a model
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // you should drop a breakpoint RIGHT HERE if you need to see the error coming back
-                mTextView.setText("That didn't work!");
-            }
-        });
-
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
-    }
+//    private void jsonParse()
+//    {
+//        RequestQueue queue = Volley.newRequestQueue(getActivity());
+//        String url = "e.com";
+//        // Request a string response from the provided URL.
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        // Display the response string in our convenient existing text view
+//                        mTextView.setText("Response is: "+ response);
+//                        // NEXT, we need to use GSON to turn that JSON into a model
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                // you should drop a breakpoint RIGHT HERE if you need to see the error coming back
+//                mTextView.setText("That didn't work!");
+//            }
+//        });
+//
+//        queue.add(stringRequest);
+//    }
 
 }
