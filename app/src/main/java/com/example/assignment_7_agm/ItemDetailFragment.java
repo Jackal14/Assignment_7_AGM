@@ -11,12 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.example.assignment_7_agm.placeholder.ModelContent;
 import com.example.assignment_7_agm.databinding.FragmentItemDetailBinding;
@@ -97,7 +91,7 @@ public class ItemDetailFragment extends Fragment {
 
     private void updateContent() {
         if (modelItem != null) {
-            mTextView.setText(modelItem.getRecentConsole());
+            mTextView.setText(modelItem.getCivDescription());
             if (mToolbarLayout != null) {
                 mToolbarLayout.setTitle(modelItem.getName());
             }

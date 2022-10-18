@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Assignment_7_AGM</string>
     <string name="title_item_detail">Item Detail</string>
-    <string name="JSON_url">https://api.jsonbin.io/v3/b/5f726a107243cd7e8245d58b</string>
+    <string name="JSON_url">https://api.jsonbin.io/v3/b/634dea3665b57a31e699d8da</string>
 </resources>

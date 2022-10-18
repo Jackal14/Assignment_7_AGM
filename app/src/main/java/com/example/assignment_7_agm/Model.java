@@ -5,31 +5,31 @@ import com.google.gson.annotations.SerializedName;
 public class Model {
     //Strings to contain the data we'll be storing in our Json
     @SerializedName("name")
-    private String companyName; //civName will be the primary key for our map
-    @SerializedName("year")
-    private Integer releaseYear;
-    @SerializedName("recentConsole")
-    private String recentConsole;
+    private String civName; //civName will be the primary key for our map
+    @SerializedName("leader")
+    private String civLeader;
+    @SerializedName("description")
+    private String civDescription;
 
     //Initializer for model
-    public Model(final String name, final Integer year, final String latestConsole) {
-        this.companyName = name;
-        this.releaseYear = year;
-        this.recentConsole = latestConsole;
+    public Model(final String name, final String year, final String latestConsole) {
+        this.civName = name;
+        this.civLeader = year;
+        this.civDescription = latestConsole;
     }
 
     //Getters
-    public String getName() {return companyName;}
+    public String getName() {return civName;}
 
-    public Integer getYear() {return releaseYear;}
+    public String getCivLeader() {return civLeader;}
 
-    public String getRecentConsole() {return recentConsole;}
+    public String getCivDescription() {return civDescription;}
 
     //Setters
-    public void setName(final String name) {this.companyName = name;}
+    public void setName(final String name) {this.civName = name;}
 
-    public void setYear(final Integer year) {this.releaseYear = year;}
+    public void setCivLeader(final String year) {this.civLeader = year;}
 
-    public void setRecentConsole(final String recentConsole) {this.recentConsole = recentConsole;}
+    public void setCivDescription(final String civDescription) {this.civDescription = civDescription;}
 
 }

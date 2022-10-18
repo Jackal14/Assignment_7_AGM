@@ -28,6 +28,7 @@ public class ModelContent {
     //List of our models that we'll build based on our payload using GSON
     public static final List<Model> MODELS = new ArrayList<>();
     public static final Map<String, Model> MODELS_MAP = new HashMap<>();
+    private static boolean BUILT = false;
 
     public void jsonParse(Activity activity)
     {
@@ -41,20 +42,24 @@ public class ModelContent {
                         // NEXT, we need to use GSON to turn that JSON into a model
                         try {
                             JSONObject object = response.getJSONObject("record");
-                            JSONArray jsonArray = object.getJSONArray("gameCompanies");
+                            JSONArray jsonArray = object.getJSONArray("civilizations");
                             MODELS.clear();
                             MODELS_MAP.clear();
                             for(int i = 0; i < jsonArray.length(); i++)
                             {
                                 JSONObject gameCompany = jsonArray.getJSONObject(i);
                                 String name = gameCompany.getString("name");
-                                Integer year = gameCompany.getInt("year");
-                                String recentConsole = gameCompany.getString("recentConsole");
-                                Model model = new Model(name, year, recentConsole);
+                                String leader = gameCompany.getString("leader");
+                                String civDescription = gameCompany.getString("description");
+                                Model model = new Model(name, leader, civDescription);
                                 MODELS.add(model);
                                 MODELS_MAP.put(name, model);
                             }
-                            activity.recreate();
+                            if(!BUILT)
+                            {
+                                activity.recreate();
+                            }
+                            BUILT = true;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -72,12 +77,6 @@ public class ModelContent {
 
     }
 
-
-    //Method to add an item to our List and Map
-    private static void addItem(Model item) {
-        MODELS.add(item);
-        MODELS_MAP.put(item.getName(), item);
-    }
 
 
 }
