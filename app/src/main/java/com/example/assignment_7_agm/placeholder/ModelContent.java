@@ -12,6 +12,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.assignment_7_agm.Model;
 import com.example.assignment_7_agm.R;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,13 +48,18 @@ public class ModelContent {
                             MODELS_MAP.clear();
                             for(int i = 0; i < jsonArray.length(); i++)
                             {
-                                JSONObject gameCompany = jsonArray.getJSONObject(i);
-                                String name = gameCompany.getString("name");
-                                String leader = gameCompany.getString("leader");
-                                String civDescription = gameCompany.getString("description");
-                                Model model = new Model(name, leader, civDescription);
+//                                JSONObject gameCompany = jsonArray.getJSONObject(i);
+//                                String name = gameCompany.getString("name");
+//                                String leader = gameCompany.getString("leader");
+//                                String civDescription = gameCompany.getString("description");
+//                                Model model = new Model(name, leader, civDescription);
+
+                                JSONObject civilization = jsonArray.getJSONObject(i);
+                                String json = String.valueOf(civilization);
+                                Gson gson = new Gson();
+                                Model model = gson.fromJson(json, Model.class);
                                 MODELS.add(model);
-                                MODELS_MAP.put(name, model);
+                                MODELS_MAP.put(model.getName(), model);
                             }
                             if(!BUILT)
                             {
