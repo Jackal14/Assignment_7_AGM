@@ -117,29 +117,4 @@ public class ItemDetailFragment extends Fragment {
 
     }
 
-
-//    private void jsonParse()
-//    {
-//        RequestQueue queue = Volley.newRequestQueue(getActivity());
-//        String url = "e.com";
-//        // Request a string response from the provided URL.
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        // Display the response string in our convenient existing text view
-//                        mTextView.setText("Response is: "+ response);
-//                        // NEXT, we need to use GSON to turn that JSON into a model
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                // you should drop a breakpoint RIGHT HERE if you need to see the error coming back
-//                mTextView.setText("That didn't work!");
-//            }
-//        });
-//
-//        queue.add(stringRequest);
-//    }
-
 }

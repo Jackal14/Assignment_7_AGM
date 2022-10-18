@@ -28,6 +28,7 @@ public class ModelContent {
     //List of our models that we'll build based on our payload using GSON
     public static final List<Model> MODELS = new ArrayList<>();
     public static final Map<String, Model> MODELS_MAP = new HashMap<>();
+    private static boolean BUILT = false;
 
     public void jsonParse(Activity activity)
     {
@@ -54,7 +55,11 @@ public class ModelContent {
                                 MODELS.add(model);
                                 MODELS_MAP.put(name, model);
                             }
-                            activity.recreate();
+                            if(!BUILT)
+                            {
+                                activity.recreate();
+                            }
+                            BUILT = true;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -71,13 +76,5 @@ public class ModelContent {
         queue.add(objectRequest);
 
     }
-
-
-    //Method to add an item to our List and Map
-    private static void addItem(Model item) {
-        MODELS.add(item);
-        MODELS_MAP.put(item.getName(), item);
-    }
-
 
 }
